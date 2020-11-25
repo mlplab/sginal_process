@@ -12,9 +12,10 @@ from contour import ContourExtraction1D, ContourExtraction2D, FFT_2d
 fmt = 'pdf'
 filter_mode = 'high'
 shape_mode = 'square'
-data_path = 'figure'
+data_path = 'figure/contour'
+base_name = 'base_figure'
 figure_name = 'Lenna.png'
-figure_path = os.path.join(data_path, figure_name)
+figure_path = os.path.join(base_name, figure_name)
 
 
 img = cv2.imread(figure_path, cv2.IMREAD_GRAYSCALE)

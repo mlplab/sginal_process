@@ -25,6 +25,12 @@ class ContourExtraction1D(ContourExtraction):
 
     def __init__(self):
         super(ContourExtraction1D, self).__init__()
+        self._1d_filter      = [np.array([[0,  0, 0],
+                                          [0, -1, 1],
+                                          [0,  0, 0]]),
+                                np.array([[0,  0, 0],
+                                          [0, -1, 0],
+                                          [0,  1, 0]])]
         self._prewitt_filter = [np.array([[-1,  0,  1],
                                           [-1,  0,  1],
                                           [-1,  0,  1]]),
@@ -43,12 +49,17 @@ class ContourExtraction1D(ContourExtraction):
             return self.prewitt(img)
         elif mode == 'sobel':
             return self.sobel(img)
+        elif mode == '1d':
+            return self.contour_1d(img)
 
     def prewitt(self, img):
         return self.conv1d(img, self._prewitt_filter)
 
     def sobel(self, img):
         return self.conv1d(img, self._sobel_filter)
+
+    def contour_1d(self, img):
+        return self.conv1d(img, self._1d_filter)
 
 
 class ContourExtraction2D(ContourExtraction):
@@ -131,7 +142,7 @@ class FFT_2d(object):
         else:
             low_path[N // 2 - R : N // 2 + R, M // 2 - R: M // 2 + R] = 1
         if save_filter:
-            plt.imsave(save_filter_name, low_path)
+            plt.imsave(save_filter_name, low_path, cmap='gray')
         return data * low_path
 
     def high_path_filter(self, data, shape, R, save_filter, save_filter_name):
@@ -146,5 +157,5 @@ class FFT_2d(object):
             high_path[N // 2 + R:] = 1
             high_path[:, M // 2 + R:] = 1
         if save_filter:
-            plt.imsave(save_filter_name, high_path)
+            plt.imsave(save_filter_name, high_path, cmap='gray')
         return data * high_path

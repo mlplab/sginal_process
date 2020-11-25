@@ -12,13 +12,14 @@ np.random.seed(65535)
 
 def plot_img(img, *args, **kwargs):
 
+    cmap = kwargs.get('cmap', 'gray')
     save_name = kwargs.get('save_name', None)
     if save_name is None:
-        plt.imshow(img, cmap='gray')
+        plt.imshow(img, cmap=cmap)
         plt.axis('off')
         plt.show()
     else:
-        plt.imsave(save_name, img, cmap='gray')
+        plt.imsave(save_name, img, cmap=cmap)
 
 
 def create_noise(img, mode='point', **kwargs):
@@ -37,3 +38,41 @@ def create_noise(img, mode='point', **kwargs):
     img *= (noise * 255)
     img = img.clip(0, 255).astype(np.uint8)
     return img
+
+
+
+def dft_1d(data):
+    N = data.shape[0]
+    i, j = np.meshgrid(np.arange(N), np.arange(N))
+    W = np.exp(-(2 * i * j  * np.pi) * 1j / N)
+    result = data.dot(W)
+    return result
+
+
+def idft_1d(self, data):
+    N = data.shape[0]
+    i, j = np.meshgrid(np.arange(N), np.arange(N))
+    W = np.exp(-(2 * i * j  * np.pi) * 1j / N) ** -1
+    result = data.dot(W)
+    return result / N
+
+
+def dft_2d(img):
+    N = img.shape[0]
+    M = img.shape[1]
+    i, j = np.meshgrid(np.arange(N), np.arange(M))
+    omega = np.exp(-2 * np.pi * 1j / N)
+    W = np.power(omega, i * j)
+    result = W.dot(img).dot(W.T)
+    return result / N / M
+
+
+def idft_2d(self, data):
+    data = np.fft.ifftshift(data)
+    N = data.shape[0]
+    M = data.shape[1]
+    i, j = np.meshgrid(np.arange(N), np.arange(M))
+    omega = np.exp(2 * np.pi * 1j / N)
+    W = np.power(omega, i * j)
+    result = W.dot(data).dot(W.T)
+    return result.real

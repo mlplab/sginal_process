@@ -24,14 +24,19 @@ size = (min(img.shape), min(img.shape))
 fft_img = cv2.resize(img, size)
 size = (min(img.shape), min(img.shape))
 fft_img = cv2.resize(img, size)
-plot_img(img)
+plot_img(img, save_name=os.path.join(data_path, f'Lenna.{fmt}'))
 
 
 contour = ContourExtraction1D()
-for mode in ['prewitt', 'sobel']:
+contour_imgs = []
+for mode in ['prewitt', 'sobel', '1d']:
     contour_img = contour.process(img, mode)
+    contour_imgs.append(contour_img)
     # contour_img = contour.laplacian(img)
     plot_img(contour_img, save_name=os.path.join(data_path, f'{mode}.{fmt}'))
+
+diff_img = np.abs(contour_imgs[0] - contour_imgs[1])
+plot_img(diff_img, cmap='jet')
 
 
 contour = ContourExtraction2D()
@@ -45,10 +50,10 @@ for shape_mode in shape_modes:
     dft = contour.dft_2d(fft_img)
     dft = np.fft.fftshift(dft)
     contour.plot_spectral(dft, save_name=os.path.join(data_path, f'fft_countour_spectral.{fmt}'))
-    idft = contour.band_path_filter(img, mode=filter_mode, shape='squaer', R=50,
+    idft = contour.band_path_filter(img, mode=filter_mode, shape=shape_mode, R=25,
                                     save_filter=True,
                                     save_filter_name=os.path.join(data_path, f'{filter_mode}_{shape_mode}_filter.{fmt}'))
     contour.plot_spectral(idft, save_name=os.path.join(data_path, f'{filter_mode}_path_spectral_{shape_mode}.{fmt}'))
     ifft_img = contour.idft_2d(idft)
-    plot_img(ifft_img, save_name=os.path.join(data_path, f'fft_contour.{fmt}'))
+    plot_img(ifft_img, save_name=os.path.join(data_path, f'fft_contour_{shape_mode}.{fmt}'))
 
