@@ -10,7 +10,36 @@
 \usepackage{amssymb}
 \usepackage{amsmath}
 \usepackage[dvipdfmx]{graphicx}
+\usepackage{listings,jvlisting} %日本語のコメントアウトをする場合jlisting（もしくはjvlisting）が必要
+%ここからソースコードの表示に関する設定
+\lstset{
+  basicstyle={\ttfamily},
+  identifierstyle={\small},
+  commentstyle={\smallitshape},
+  keywordstyle={\small\bfseries},
+  ndkeywordstyle={\small},
+  stringstyle={\small\ttfamily},
+  frame={tb},
+  breaklines=true,
+  columns=[l]{fullflexible},
+  numbers=left,
+  xrightmargin=0zw,
+  xleftmargin=3zw,
+  numberstyle={\scriptsize},
+  stepnumber=1,
+  numbersep=1zw,
+  lineskip=-0.5ex
+}
+%ここまでソースコードの表示に関する設定
 \usepackage{hyperref}
+\def\figureautorefname~#1\null{ 図~#1\null}
+\def\tableautorefname~#1\null{ 表~#1\null}
+\def\sectionautorefname~#1\null{第~#1章\null}
+\def\subsectionautorefname~#1\null{~#1節\null}
+\def\subsubsectionautorefname~#1\null{~#1節\null}
+\newif\iffigure
+% \figurefalse
+\figuretrue
 
 
 \title{画像処理技術における信号処理技術の応用 \\
@@ -23,7 +52,8 @@
 
 \begin{document}
 \maketitle
-% \newpage
 \input{documents/intro}
 \input{documents/signal}
+\input{documents/experiment}
+\input{documents/conclusion}
 \end{document}

@@ -113,7 +113,7 @@ class FFT_2d(object):
 
     def plot_spectral(self, data, *args, **kwargs):
         save_name = kwargs.get('save_name', None)
-        data_spe = 20 * np.log(np.abs(data))
+        data_spe = 20 * np.log(np.abs(data) + 1e-6)
         plot_img(data_spe, save_name=save_name)
         return self
 

@@ -49,10 +49,10 @@ def dft_1d(data):
     return result
 
 
-def idft_1d(self, data):
+def idft_1d(data):
     N = data.shape[0]
     i, j = np.meshgrid(np.arange(N), np.arange(N))
-    W = np.exp(-(2 * i * j  * np.pi) * 1j / N) ** -1
+    W = np.exp((2 * i * j  * np.pi) * 1j / N)
     result = data.dot(W)
     return result / N
 
